@@ -12,6 +12,7 @@ public class HelloController {
     @GetMapping("/api/v1/hello")
     public String hello() {
         log.info("crontab 실행");
+
         return "hello";
     }
 
