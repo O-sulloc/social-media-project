@@ -13,8 +13,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserDTO join(UserJoinRequest request){
-        User user =userRepository.save(request.toEntity());
+    public UserDTO join(UserJoinRequest request) {
+        User user = userRepository.save(request.toEntity());
 
         return UserDTO.builder()
                 .id(user.getId())
