@@ -1,11 +1,10 @@
 package com.app.socialmedia.controller;
 
-import com.app.socialmedia.domain.dto.UserDTO;
-import com.app.socialmedia.domain.dto.UserJoinRequest;
-import com.app.socialmedia.domain.dto.UserJoinResponse;
+import com.app.socialmedia.domain.dto.*;
 import com.app.socialmedia.domain.entity.Response;
 import com.app.socialmedia.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+
+    @PostMapping("/login")
+    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest request) {
+        String token = userService.login(request.getUserName(), request.getPassword());
+
+        return Response.success(new UserLoginResponse(token));
+    }
 
     @PostMapping("/join")
     public Response<UserJoinResponse> join(@RequestBody UserJoinRequest request) {
