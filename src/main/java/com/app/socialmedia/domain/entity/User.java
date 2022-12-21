@@ -4,16 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User {
+public class User extends Base{
+    //base 클래스 상속 (가입일, 수정일)
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -24,9 +26,4 @@ public class User {
     private String password;
 
     //UserRole
-    //private Date registeredAt; //가입일
-    //private Date updatedAt; //수정일
-    //private Date deletedAt; //탈퇴일
-
-
 }
