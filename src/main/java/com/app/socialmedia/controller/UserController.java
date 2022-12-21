@@ -24,6 +24,6 @@ public class UserController {
 
         UserDTO userDTO = userService.join(request);
 
-        return Response.success(new UserJoinResponse(userDTO.getUserName(), userDTO.getPassword()));
+        return Response.success(new UserJoinResponse(userDTO.getId(), userDTO.getUserName()));
     }
 }
