@@ -24,7 +24,7 @@ public class UserService {
     @Value("${jwt.token.secret}") //환경변수로 설정해둠
     private String secretKey;
 
-    private long expiredTime = 1000 * 60 * 60L; //1시간
+    private Long expiredTime = 1000 * 60 * 60L; //1시간
 
     public String login(String userName, String password) {
 
