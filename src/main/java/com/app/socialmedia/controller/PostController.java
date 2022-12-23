@@ -12,8 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
 @Slf4j
@@ -25,11 +26,10 @@ public class PostController {
     public Response<PostAddResponse> addPost(@RequestBody PostAddRequest request, Authentication authentication) {
         //포스트 작성
 
-        PostDTO postDTO = postService.addPost(request,authentication);
+        PostDTO postDTO = postService.addPost(request, authentication);
 
         log.info(authentication.getName());
 
-        return Response.success(new PostAddResponse(postDTO.getPostId()));
-
+        return Response.success(new PostAddResponse("포스트 등록 완료", postDTO.getPostId()));
     }
 }
