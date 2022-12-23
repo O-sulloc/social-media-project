@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,7 +17,7 @@ public class User extends Base{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long id; //Integer
+    private Long userId; //Integer
 
     @Column(unique = true) //username 컬럼 unique 제약 조건
     private String userName;
