@@ -4,7 +4,6 @@ import com.app.socialmedia.domain.dto.*;
 import com.app.socialmedia.domain.entity.Response;
 import com.app.socialmedia.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +29,6 @@ public class UserController {
 
         UserDTO userDTO = userService.join(request);
 
-        return Response.success(new UserJoinResponse(userDTO.getId(), userDTO.getUserName()));
+        return Response.success(new UserJoinResponse(userDTO.getUserId(), userDTO.getUserName()));
     }
 }

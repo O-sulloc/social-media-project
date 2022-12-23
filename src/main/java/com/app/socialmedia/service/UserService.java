@@ -52,7 +52,7 @@ public class UserService {
         User user = userRepository.save(request.toEntity(encoder.encode(request.getPassword()))); //password encode
 
         return UserDTO.builder()
-                .id(user.getId())
+                .userId(user.getUserId())
                 .userName(user.getUserName())
                 .password(user.getPassword())
                 .build();

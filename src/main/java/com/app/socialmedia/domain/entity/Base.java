@@ -21,10 +21,11 @@ public class Base {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime registeredAt; //가입일
+    private LocalDateTime registeredAt; //가입일, 작성일
 
     @LastModifiedDate
     private LocalDateTime updatedAt; //수정일
 
-    //private LocalDateTime deletedAt; //탈퇴일
+
+    //private LocalDateTime deletedAt; //탈퇴일, 삭제일
 }
