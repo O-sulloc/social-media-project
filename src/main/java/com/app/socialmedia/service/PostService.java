@@ -24,7 +24,9 @@ public class PostService {
 
     public PostDTO getOne(Long postId) {
         // 포스트 아이디로 글 하나 가져오기
-        Optional<Post> post = postRepository.findById(postId);
+        Optional<Post> post = Optional.ofNullable(postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage())));
+
 
         return post.get().toDTO();
     }

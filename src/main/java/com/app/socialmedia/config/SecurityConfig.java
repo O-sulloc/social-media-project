@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/v1/users/**").permitAll() //회원가입, 로그인은 항상 접근 가능
                 .antMatchers(HttpMethod.POST, "/api/v1/posts").authenticated() // 글작성 post 요청이 왔을 때 인증된 사용자인지 확인
+                .antMatchers(HttpMethod.GET, "/api/v1/posts/{postId}").permitAll() //글
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

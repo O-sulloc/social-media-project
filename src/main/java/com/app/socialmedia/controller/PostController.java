@@ -4,7 +4,6 @@ import com.app.socialmedia.domain.dto.PostAddRequest;
 import com.app.socialmedia.domain.dto.PostAddResponse;
 import com.app.socialmedia.domain.dto.PostDTO;
 import com.app.socialmedia.domain.dto.PostGetOneResponse;
-import com.app.socialmedia.domain.entity.Post;
 import com.app.socialmedia.domain.entity.Response;
 import com.app.socialmedia.service.PostService;
 import lombok.RequiredArgsConstructor;
