@@ -1,5 +1,6 @@
 package com.app.socialmedia.domain.entity;
 
+import com.app.socialmedia.domain.dto.PostDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,4 +23,9 @@ public class Post extends Base {
     @ManyToOne
     @JoinColumn(name = "user_id") //id 외래키
     private User user;
+
+    public PostDTO toDTO() {
+        return new PostDTO(this.postId, this.body, this.title, this.getUser().getUserName(), this.getRegisteredAt(), this.getUpdatedAt());
+    }
+
 }

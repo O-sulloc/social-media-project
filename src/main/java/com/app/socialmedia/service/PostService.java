@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -19,6 +21,13 @@ public class PostService {
     private final PostRepository postRepository;
 
     private final UserRepository userRepository;
+
+    public PostDTO getOne(Long postId) {
+        // 포스트 아이디로 글 하나 가져오기
+        Optional<Post> post = postRepository.findById(postId);
+
+        return post.get().toDTO();
+    }
 
     public PostDTO addPost(PostAddRequest request, Authentication authentication) {
         User user = userRepository.findByUserName(authentication.getName())
