@@ -27,12 +27,29 @@ public class PostService {
 
     private final UserRepository userRepository;
 
+    public void delete(Long postId, Authentication authentication) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+
+        log.info("writer name:{}", post.getUser().getUserName());
+        log.info("editor name:{}", authentication.getName());
+
+        // 삭제하려는 사람 != 글쓴이
+        if (!authentication.getName().equals(post.getUser().getUserName())) {
+            throw new AppException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage());
+        }
+
+        // TODO: 삭제하려는 사람 == ADMIN
+
+        postRepository.delete(post);
+    }
+
     @Transactional
     public void update(Long postId, PostUpdateRequest request, Authentication authentication) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
 
-        log.info("writer name:{}",post.getUser().getUserName());
+        log.info("writer name:{}", post.getUser().getUserName());
         log.info("editor name:{}", authentication.getName());
 
         // 수정하려는 사람 != 글쓴이

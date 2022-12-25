@@ -16,6 +16,13 @@ public class PostController {
 
     private final PostService postService;
 
+    @DeleteMapping("/{postId}")
+    public Response<PostResponse> delete(@PathVariable Long postId, Authentication authentication) {
+        postService.delete(postId, authentication);
+
+        return Response.success(new PostResponse("포스트 삭제 완료", postId));
+    }
+
     @PutMapping("/{postId}")
     public Response<PostResponse> update(@PathVariable Long postId, @RequestBody PostUpdateRequest request, Authentication authentication) {
         postService.update(postId, request, authentication);
