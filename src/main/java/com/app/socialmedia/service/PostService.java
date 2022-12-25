@@ -2,31 +2,60 @@ package com.app.socialmedia.service;
 
 import com.app.socialmedia.domain.dto.PostAddRequest;
 import com.app.socialmedia.domain.dto.PostDTO;
+import com.app.socialmedia.domain.dto.PostUpdateRequest;
 import com.app.socialmedia.domain.entity.Post;
+import com.app.socialmedia.domain.entity.PostEditor;
 import com.app.socialmedia.domain.entity.User;
 import com.app.socialmedia.exception.AppException;
 import com.app.socialmedia.exception.ErrorCode;
 import com.app.socialmedia.repository.PostRepository;
 import com.app.socialmedia.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 
     private final PostRepository postRepository;
 
     private final UserRepository userRepository;
 
+    @Transactional
+    public void update(Long postId, PostUpdateRequest request, Authentication authentication) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+
+        log.info("writer name:{}",post.getUser().getUserName());
+        log.info("editor name:{}", authentication.getName());
+
+        // 수정하려는 사람 != 글쓴이
+        if (!authentication.getName().equals(post.getUser().getUserName())) {
+            throw new AppException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage());
+        }
+
+
+        // TODO: 수정하려는 사람 == ADMIN
+
+        PostEditor.PostEditorBuilder builder = post.toEditor();
+
+        PostEditor postEditor = builder.title(request.getTitle())
+                .body(request.getBody())
+                .build();
+
+        post.edit(postEditor);
+    }
+
     public PostDTO getOne(Long postId) {
         // 포스트 아이디로 글 하나 가져오기
         Optional<Post> post = Optional.ofNullable(postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage())));
-
 
         return post.get().toDTO();
     }

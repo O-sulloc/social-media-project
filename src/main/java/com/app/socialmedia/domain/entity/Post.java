@@ -28,4 +28,15 @@ public class Post extends Base {
         return new PostDTO(this.postId, this.body, this.title, this.getUser().getUserName(), this.getRegisteredAt(), this.getUpdatedAt());
     }
 
+    public PostEditor.PostEditorBuilder toEditor(){
+        return PostEditor.builder()
+                .title(title)
+                .body(body);
+    }
+
+    public void edit(PostEditor postEditor){
+        title = postEditor.getTitle();
+        body = postEditor.getBody();
+    }
+
 }

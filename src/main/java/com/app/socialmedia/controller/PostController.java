@@ -1,9 +1,6 @@
 package com.app.socialmedia.controller;
 
-import com.app.socialmedia.domain.dto.PostAddRequest;
-import com.app.socialmedia.domain.dto.PostAddResponse;
-import com.app.socialmedia.domain.dto.PostDTO;
-import com.app.socialmedia.domain.dto.PostGetOneResponse;
+import com.app.socialmedia.domain.dto.*;
 import com.app.socialmedia.domain.entity.Response;
 import com.app.socialmedia.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +16,13 @@ public class PostController {
 
     private final PostService postService;
 
+    @PutMapping("/{postId}")
+    public Response<PostResponse> update(@PathVariable Long postId, @RequestBody PostUpdateRequest request, Authentication authentication) {
+        postService.update(postId, request, authentication);
+
+        return Response.success(new PostResponse("포스트 수정 완료", postId));
+    }
+
     @GetMapping("/{postId}")
     public Response<PostGetOneResponse> getOne(@PathVariable Long postId) {
         PostDTO postDTO = postService.getOne(postId);
@@ -27,13 +31,13 @@ public class PostController {
     }
 
     @PostMapping
-    public Response<PostAddResponse> addPost(@RequestBody PostAddRequest request, Authentication authentication) {
+    public Response<PostResponse> addPost(@RequestBody PostAddRequest request, Authentication authentication) {
         //포스트 작성
 
         PostDTO postDTO = postService.addPost(request, authentication);
 
         log.info(authentication.getName());
 
-        return Response.success(new PostAddResponse("포스트 등록 완료", postDTO.getPostId()));
+        return Response.success(new PostResponse("포스트 등록 완료", postDTO.getPostId()));
     }
 }
