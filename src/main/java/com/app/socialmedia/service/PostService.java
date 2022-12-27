@@ -10,16 +10,13 @@ import com.app.socialmedia.repository.PostRepository;
 import com.app.socialmedia.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,12 +57,6 @@ public class PostService {
 
         return pageInfoResponse;
     }
-
-    /*public List<PostGetOneResponse> getList(Pageable pageable) {
-        Page<Post> postList = postRepository.findAll(pageable);
-
-        return postList.stream().collect(Collectors.toList());
-    }*/
 
     public void delete(Long postId, Authentication authentication) {
         Post post = postRepository.findById(postId)
