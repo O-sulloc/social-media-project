@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 @Builder
 public class PostGetOneResponse {
 
-    private Long postId;
+    private Long id;
     private String title;
     private String body;
     private String userName; //글쓴이(user_name) user
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime registeredAt; //작성일
+    private LocalDateTime createdAt; //작성일
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime updatedAt; //수정일
+    private LocalDateTime lastModifiedAt; //수정일
 
 }

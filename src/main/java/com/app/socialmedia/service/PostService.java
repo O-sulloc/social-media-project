@@ -34,12 +34,12 @@ public class PostService {
         //dto로 변환
         Page<PostGetOneResponse> postResponse = postList.map(
                 post -> PostGetOneResponse.builder()
-                        .postId(post.getPostId())
+                        .id(post.getPostId())
                         .body(post.getBody())
                         .title(post.getTitle())
                         .userName(post.getUser().getUserName())
-                        .registeredAt(post.getRegisteredAt())
-                        .updatedAt(post.getUpdatedAt())
+                        .createdAt(post.getRegisteredAt())
+                        .lastModifiedAt(post.getUpdatedAt())
                         .build());
 
         PageInfoResponse pageInfoResponse = PageInfoResponse.builder()
