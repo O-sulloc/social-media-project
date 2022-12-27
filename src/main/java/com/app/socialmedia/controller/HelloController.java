@@ -11,7 +11,7 @@ public class HelloController {
 
     @GetMapping("/api/v1/hello")
     public String hello() {
-        return "김정현";
+        return "김정현test";
     }
 
     @GetMapping("/api/v1/hello2")
