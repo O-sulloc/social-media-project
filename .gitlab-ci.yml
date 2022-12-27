@@ -2,6 +2,10 @@ stages:
   - dockerbuild-push
 
 package:
+  rules:
+    - changes:
+      - "*.md"
+      when: never
   only:
     - main
   image: docker:latest
