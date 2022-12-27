@@ -1,9 +1,3 @@
-workflow:
-  rules:
-    - changes:
-      - "*.md"
-      when: never
-
 stages:
   - dockerbuild-push
 
