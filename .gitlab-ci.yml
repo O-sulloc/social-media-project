@@ -1,11 +1,13 @@
-stages:
-  - dockerbuild-push
-
-package:
+workflow:
   rules:
     - changes:
       - "*.md"
       when: never
+
+stages:
+  - dockerbuild-push
+
+package:
   only:
     - main
   image: docker:latest
