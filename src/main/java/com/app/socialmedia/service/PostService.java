@@ -1,8 +1,6 @@
 package com.app.socialmedia.service;
 
-import com.app.socialmedia.domain.dto.PostAddRequest;
-import com.app.socialmedia.domain.dto.PostDTO;
-import com.app.socialmedia.domain.dto.PostUpdateRequest;
+import com.app.socialmedia.domain.dto.*;
 import com.app.socialmedia.domain.entity.Post;
 import com.app.socialmedia.domain.entity.PostEditor;
 import com.app.socialmedia.domain.entity.User;
@@ -12,11 +10,16 @@ import com.app.socialmedia.repository.PostRepository;
 import com.app.socialmedia.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,43 @@ public class PostService {
     private final PostRepository postRepository;
 
     private final UserRepository userRepository;
+
+    public PageInfoResponse getList(Pageable pageable) {
+
+        Page<Post> postList = postRepository.findAll(pageable);
+
+        //dto로 변환
+        Page<PostGetOneResponse> postResponse = postList.map(
+                post -> PostGetOneResponse.builder()
+                        .postId(post.getPostId())
+                        .body(post.getBody())
+                        .title(post.getTitle())
+                        .userName(post.getUser().getUserName())
+                        .registeredAt(post.getRegisteredAt())
+                        .updatedAt(post.getUpdatedAt())
+                        .build());
+
+        PageInfoResponse pageInfoResponse = PageInfoResponse.builder()
+                .content(postResponse.getContent())
+                .pageable("INSTANCE")
+                .last(postResponse.hasNext()) //다음 글이 없으면 False를 리턴한다.
+                .totalPages(postResponse.getTotalPages())
+                .size(postResponse.getSize())
+                .number(postResponse.getNumber())
+                .sort(postResponse.getSort())
+                .first(postResponse.isFirst())
+                .numberOfElements(postResponse.getNumberOfElements())
+                .empty(postResponse.isEmpty())
+                .build();
+
+        return pageInfoResponse;
+    }
+
+    /*public List<PostGetOneResponse> getList(Pageable pageable) {
+        Page<Post> postList = postRepository.findAll(pageable);
+
+        return postList.stream().collect(Collectors.toList());
+    }*/
 
     public void delete(Long postId, Authentication authentication) {
         Post post = postRepository.findById(postId)

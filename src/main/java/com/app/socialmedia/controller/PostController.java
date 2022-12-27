@@ -1,12 +1,19 @@
 package com.app.socialmedia.controller;
 
 import com.app.socialmedia.domain.dto.*;
+import com.app.socialmedia.domain.entity.Post;
 import com.app.socialmedia.domain.entity.Response;
 import com.app.socialmedia.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,6 +22,14 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
+
+    @GetMapping
+    public Response<PageInfoResponse> getList(@PageableDefault(size = 20, sort = "registeredAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        PageInfoResponse postResponses = postService.getList(pageable);
+
+        return Response.success(postResponses);
+    }
+
 
     @DeleteMapping("/{postId}")
     public Response<PostResponse> delete(@PathVariable Long postId, Authentication authentication) {
