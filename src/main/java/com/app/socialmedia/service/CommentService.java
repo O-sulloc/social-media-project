@@ -1,6 +1,7 @@
 package com.app.socialmedia.service;
 
-import com.app.socialmedia.domain.dto.comment.CommentAddRequest;
+import com.app.socialmedia.domain.dto.comment.CommentEditor;
+import com.app.socialmedia.domain.dto.comment.CommentRequest;
 import com.app.socialmedia.domain.dto.comment.CommentDTO;
 import com.app.socialmedia.domain.entity.Comment;
 import com.app.socialmedia.domain.entity.Post;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +26,44 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
-    /*--- 댓글 삭제  ---*/
-    public void deleteComment(Long postId, Long id, Authentication authentication) {
+
+    /*--- 댓글 수정 ---*/
+    @Transactional
+    public CommentDTO updateComment(Long id, CommentRequest request, Authentication authentication) {
+
+        // 1. 댓글 존재 여부 검증
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.COMMENT_NOT_FOUND, ErrorCode.COMMENT_NOT_FOUND.getMessage()));
+        log.info("댓글 찾음:{}", comment.getComment());
+
+        log.info("수정자:{}", authentication.getName());
+        log.info("작성자:{}", comment.getUser().getUserName());
+
+        // 2. 댓글 작성자 == 수정 요청자
+        if (!authentication.getName().equals(comment.getUser().getUserName())) {
+            throw new AppException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage());
+        }
+
+        // 3. 댓글 수정
+        CommentEditor.CommentEditorBuilder builder = comment.toEditor();
+        CommentEditor commentEditor = builder.comment(request.getComment())
+                .build();
+
+        comment.edit(commentEditor);
+
+        return CommentDTO.builder()
+                .id(comment.getId())
+                .comment(comment.getComment())
+                .user(comment.getUser())
+                .post(comment.getPost())
+                .registeredAt(comment.getRegisteredAt())
+                .updatedAt(comment.getUpdatedAt())
+                .build();
+    }
+
+
+    /*--- 댓글 삭제 ---*/
+    public void deleteComment(Long id, Authentication authentication) {
 
         // 1. 댓글 존재 여부 검증
         Comment comment = commentRepository.findById(id)
@@ -35,14 +73,14 @@ public class CommentService {
         if (!authentication.getName().equals(comment.getUser().getUserName())) {
             throw new AppException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage());
         }
+        log.info("요청자 닉넴:{}", authentication.getName());
 
         // 3. 댓글 삭제
         commentRepository.delete(comment);
-
     }
 
     /*--- 댓글 작성 ---*/
-    public CommentDTO addComment(CommentAddRequest request, Long postId, Authentication authentication) {
+    public CommentDTO addComment(CommentRequest request, Long postId, Authentication authentication) {
 
         // 1. 로그인 검증
         User user = userRepository.findByUserName(authentication.getName())
@@ -64,4 +102,5 @@ public class CommentService {
                 .updatedAt(comment.getUpdatedAt())
                 .build();
     }
+
 }

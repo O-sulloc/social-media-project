@@ -1,9 +1,6 @@
 package com.app.socialmedia.controller;
 
-import com.app.socialmedia.domain.dto.comment.CommentAddRequest;
-import com.app.socialmedia.domain.dto.comment.CommentDTO;
-import com.app.socialmedia.domain.dto.comment.CommentDeleteResponse;
-import com.app.socialmedia.domain.dto.comment.CommentResponse;
+import com.app.socialmedia.domain.dto.comment.*;
 import com.app.socialmedia.domain.dto.post.*;
 import com.app.socialmedia.domain.entity.Response;
 import com.app.socialmedia.service.CommentService;
@@ -27,6 +24,23 @@ public class PostController {
     private final CommentService commentService;
 
     /**
+     * 댓글 수정
+     *
+     * @param postId         (포스트 번호)
+     * @param id             (댓글 번호)
+     * @param authentication
+     * @return id, comment, userName, postId, lastModifiedAt
+     */
+    @PutMapping("/{postId}/comments/{id}")
+    public Response<CommentUpdateResponse> updateComment(@PathVariable Long postId, @PathVariable Long id, @RequestBody CommentRequest request, Authentication authentication) {
+
+        CommentDTO commentDTO = commentService.updateComment(id, request, authentication);
+
+        return Response.success(new CommentUpdateResponse(commentDTO.getId(), commentDTO.getComment(), commentDTO.getUser().getUserName(), commentDTO.getPost().getPostId(), commentDTO.getUpdatedAt()));
+    }
+
+
+    /**
      * 댓글 삭제
      *
      * @param postId         (포스트 번호)
@@ -36,10 +50,11 @@ public class PostController {
      */
     @DeleteMapping("/{postId}/comments/{id}")
     public Response<CommentDeleteResponse> deleteComment(@PathVariable Long postId, @PathVariable Long id, Authentication authentication) {
-        commentService.deleteComment(postId, id, authentication);
+        commentService.deleteComment(id, authentication);
 
         return Response.success(new CommentDeleteResponse("댓글 삭제 완료", id));
     }
+
 
     /**
      * 댓글 작성
@@ -50,7 +65,7 @@ public class PostController {
      * @return id, comment, userName, postId, createdAt
      */
     @PostMapping("/{postId}/comments")
-    public Response<CommentResponse> addComment(@PathVariable Long postId, @RequestBody CommentAddRequest request, Authentication authentication) {
+    public Response<CommentResponse> addComment(@PathVariable Long postId, @RequestBody CommentRequest request, Authentication authentication) {
 
         CommentDTO commentDTO = commentService.addComment(request, postId, authentication);
 

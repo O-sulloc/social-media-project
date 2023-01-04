@@ -2,7 +2,7 @@ package com.app.socialmedia.service;
 
 import com.app.socialmedia.domain.dto.post.*;
 import com.app.socialmedia.domain.entity.Post;
-import com.app.socialmedia.domain.entity.PostEditor;
+import com.app.socialmedia.domain.dto.post.PostEditor;
 import com.app.socialmedia.domain.entity.User;
 import com.app.socialmedia.exception.AppException;
 import com.app.socialmedia.exception.ErrorCode;
