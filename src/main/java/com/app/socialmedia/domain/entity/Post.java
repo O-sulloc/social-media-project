@@ -10,7 +10,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Builder
-@Setter
 public class Post extends Base {
 
     @Id
