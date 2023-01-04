@@ -44,6 +44,7 @@ public class UserService {
 
     public UserDTO join(UserJoinRequest request) {
 
+        //username 중복 체크
         userRepository.findByUserName(request.getUserName())
                 .ifPresent(user -> {
                     throw new AppException(ErrorCode.DUPLICATED_USER_NAME, ErrorCode.DUPLICATED_USER_NAME.getMessage());

@@ -17,7 +17,7 @@ public class User extends Base{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long userId; //Integer
+    private Long userId;
 
     @Column(unique = true) //username 컬럼 unique 제약 조건
     private String userName;

@@ -114,7 +114,7 @@ public class PostService {
 
         Post post = postRepository.save(request.toEntity(user));
 
-        post.setUser(user); //ㅋㅋ 이게 최선인가.. 뭐 어쨌든 userId 들어가긴 함.. 되는게 중요한거겠지...
+        post.setUser(user); //TODO: authentication활용해서
 
         return PostDTO.builder()
                 .postId(post.getPostId())
