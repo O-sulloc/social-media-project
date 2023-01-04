@@ -1,4 +1,4 @@
-package com.app.socialmedia.domain.dto;
+package com.app.socialmedia.domain.dto.user;
 
 import com.app.socialmedia.domain.entity.User;
 import lombok.AllArgsConstructor;

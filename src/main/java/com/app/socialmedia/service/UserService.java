@@ -1,7 +1,7 @@
 package com.app.socialmedia.service;
 
-import com.app.socialmedia.domain.dto.UserDTO;
-import com.app.socialmedia.domain.dto.UserJoinRequest;
+import com.app.socialmedia.domain.dto.user.UserDTO;
+import com.app.socialmedia.domain.dto.user.UserJoinRequest;
 import com.app.socialmedia.domain.entity.User;
 import com.app.socialmedia.exception.AppException;
 import com.app.socialmedia.exception.ErrorCode;

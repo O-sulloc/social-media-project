@@ -1,6 +1,6 @@
 package com.app.socialmedia.controller;
 
-import com.app.socialmedia.domain.dto.*;
+import com.app.socialmedia.domain.dto.user.*;
 import com.app.socialmedia.domain.entity.Response;
 import com.app.socialmedia.service.UserService;
 import lombok.RequiredArgsConstructor;

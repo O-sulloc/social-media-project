@@ -1,6 +1,7 @@
-package com.app.socialmedia.domain.dto;
+package com.app.socialmedia.domain.dto.post;
 
 import com.app.socialmedia.domain.entity.Post;
+import com.app.socialmedia.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,15 +9,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostUpdateRequest {
+public class PostAddRequest {
 
     private String title;
     private String body;
 
-    public Post toEntity() {
+    public Post toEntity(User user) {
         return Post.builder()
                 .title(this.title)
                 .body(this.body)
+                .user(user)
                 .build();
     }
 }
