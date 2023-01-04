@@ -1,4 +1,4 @@
-package com.app.socialmedia.domain.entity;
+package com.app.socialmedia.domain.dto.post;
 
 import lombok.Builder;
 import lombok.Getter;
