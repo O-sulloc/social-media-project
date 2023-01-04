@@ -114,8 +114,6 @@ public class PostService {
 
         Post post = postRepository.save(request.toEntity(user));
 
-        post.setUser(user); //TODO: authentication활용해서
-
         return PostDTO.builder()
                 .postId(post.getPostId())
                 .title(post.getTitle())
