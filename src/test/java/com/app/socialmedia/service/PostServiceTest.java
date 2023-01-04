@@ -1,24 +1,18 @@
 package com.app.socialmedia.service;
 
-import com.app.socialmedia.domain.dto.PostAddRequest;
+import com.app.socialmedia.domain.dto.post.PostAddRequest;
 import com.app.socialmedia.domain.entity.User;
 import com.app.socialmedia.repository.PostRepository;
 import com.app.socialmedia.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+
 import static org.mockito.ArgumentMatchers.any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PostServiceTest {

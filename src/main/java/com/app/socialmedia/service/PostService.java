@@ -1,6 +1,6 @@
 package com.app.socialmedia.service;
 
-import com.app.socialmedia.domain.dto.*;
+import com.app.socialmedia.domain.dto.post.*;
 import com.app.socialmedia.domain.entity.Post;
 import com.app.socialmedia.domain.entity.PostEditor;
 import com.app.socialmedia.domain.entity.User;

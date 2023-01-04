@@ -1,4 +1,4 @@
-package com.app.socialmedia.domain.dto;
+package com.app.socialmedia.domain.dto.post;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

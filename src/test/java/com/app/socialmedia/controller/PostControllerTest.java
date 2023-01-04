@@ -1,7 +1,7 @@
 package com.app.socialmedia.controller;
 
-import com.app.socialmedia.domain.dto.PostAddRequest;
-import com.app.socialmedia.domain.dto.PostDTO;
+import com.app.socialmedia.domain.dto.post.PostAddRequest;
+import com.app.socialmedia.domain.dto.post.PostDTO;
 import com.app.socialmedia.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -20,9 +20,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @WebMvcTest(PostController.class)
 @MockBean(JpaMetamodelMappingContext.class)

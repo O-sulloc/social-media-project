@@ -1,6 +1,6 @@
 package com.app.socialmedia.domain.entity;
 
-import com.app.socialmedia.domain.dto.PostDTO;
+import com.app.socialmedia.domain.dto.post.PostDTO;
 import lombok.*;
 
 import javax.persistence.*;
