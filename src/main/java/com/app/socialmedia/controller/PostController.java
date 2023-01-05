@@ -23,6 +23,16 @@ public class PostController {
     private final PostService postService;
     private final CommentService commentService;
 
+
+    @GetMapping("/{postId}/comments")
+    public Response<CommentInfoResponse> getAllComments(@PathVariable Long postId, @PageableDefault(size = 10, sort = "registeredAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        CommentInfoResponse commentInfoResponse = commentService.getAllComments(pageable);
+
+        return Response.success(commentInfoResponse);
+    }
+
+
     /**
      * 댓글 수정
      *
