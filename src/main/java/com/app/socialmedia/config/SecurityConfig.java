@@ -36,6 +36,8 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST, "/api/v1/posts/{postId}/comments").authenticated() // 댓글 작성 post 요청이 왔을 때 인증된 사용자인지 확인
                 .antMatchers(HttpMethod.PUT, "/api/v1/posts/{postId}/comments").authenticated() // 댓글 수정
                 .antMatchers(HttpMethod.GET, "/api/v1/posts/{postId}/comments").permitAll() //댓글 조회 누구나 가능
+
+                .antMatchers(HttpMethod.POST, "/api/v1/posts/{postId}/likes").authenticated() // 좋아요 누르기
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

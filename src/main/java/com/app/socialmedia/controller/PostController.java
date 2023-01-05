@@ -4,6 +4,7 @@ import com.app.socialmedia.domain.dto.comment.*;
 import com.app.socialmedia.domain.dto.post.*;
 import com.app.socialmedia.domain.entity.Response;
 import com.app.socialmedia.service.CommentService;
+import com.app.socialmedia.service.LikeService;
 import com.app.socialmedia.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,35 @@ public class PostController {
 
     private final PostService postService;
     private final CommentService commentService;
+    private final LikeService likeService;
+
+    /**
+     * 좋아요 기능
+     *
+     * @param postId
+     * @param authentication
+     * @return
+     */
+    @PostMapping("/{postId}/likes")
+    public Response<String> addLike(@PathVariable Long postId, Authentication authentication) {
+        if (!likeService.addLike(authentication, postId)) {
+            // false면 중복
+
+            return Response.error("ERROR", "좋아요는 한 번만 가능합니다.");
+        }
+
+        return Response.success("좋아요를 눌렀습니다.");
+
+    }
 
 
+    /**
+     * 댓글 조회
+     *
+     * @param postId   (포스트 번호)
+     * @param pageable
+     * @return commentInfoResponse
+     */
     @GetMapping("/{postId}/comments")
     public Response<CommentInfoResponse> getAllComments(@PathVariable Long postId, @PageableDefault(size = 10, sort = "registeredAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
