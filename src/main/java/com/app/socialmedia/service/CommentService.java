@@ -1,8 +1,6 @@
 package com.app.socialmedia.service;
 
-import com.app.socialmedia.domain.dto.comment.CommentEditor;
-import com.app.socialmedia.domain.dto.comment.CommentRequest;
-import com.app.socialmedia.domain.dto.comment.CommentDTO;
+import com.app.socialmedia.domain.dto.comment.*;
 import com.app.socialmedia.domain.entity.Comment;
 import com.app.socialmedia.domain.entity.Post;
 import com.app.socialmedia.domain.entity.User;
@@ -13,6 +11,8 @@ import com.app.socialmedia.repository.PostRepository;
 import com.app.socialmedia.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +27,44 @@ public class CommentService {
     private final PostRepository postRepository;
 
 
+    /*--- 댓글 전체 조회---*/
+    public CommentInfoResponse getAllComments(Pageable pageable) {
+
+        // 댓글 찾기
+        Page<Comment> commentList = commentRepository.findAll(pageable);
+
+        Page<CommentResponse> commentResponse = commentList.map(
+                comment -> CommentResponse.builder()
+                        .id(comment.getId())
+                        .comment(comment.getComment())
+                        .userName(comment.getUser().getUserName())
+                        .postId(comment.getPost().getPostId())
+                        .createdAt(comment.getRegisteredAt())
+                        .build()
+        );
+
+        CommentInfoResponse commentInfoResponse = CommentInfoResponse.builder()
+                .content(commentResponse.getContent())
+                .pageable(commentResponse.getPageable())
+                .last(commentResponse.hasNext())
+                .totalPages(commentResponse.getTotalPages())
+                .size(commentResponse.getSize())
+                .number(commentResponse.getNumber())
+                .sort(commentResponse.getSort())
+                .first(commentResponse.isFirst())
+                .numberOfElements(commentResponse.getNumberOfElements())
+                .empty(commentResponse.isEmpty())
+                .build();
+
+        return commentInfoResponse;
+    }
+
+
     /*--- 댓글 수정 ---*/
     @Transactional
     public CommentDTO updateComment(Long id, CommentRequest request, Authentication authentication) {
+
+        // TODO: admin 권한
 
         // 1. 댓글 존재 여부 검증
         Comment comment = commentRepository.findById(id)
@@ -64,6 +99,8 @@ public class CommentService {
 
     /*--- 댓글 삭제 ---*/
     public void deleteComment(Long id, Authentication authentication) {
+
+        // TODO: admin 권한
 
         // 1. 댓글 존재 여부 검증
         Comment comment = commentRepository.findById(id)
