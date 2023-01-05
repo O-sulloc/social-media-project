@@ -11,9 +11,7 @@ import com.app.socialmedia.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +21,20 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+
+
+    /*--- 좋아요 개수 리턴 ---*/
+    public Long getLike(Long postId) {
+
+        // 1. 포스트 존재 여부 확인
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+
+        // 2. 포스트 좋아요 개수 리턴
+        return likeRepository.countByPost(post);
+
+    }
+
 
     /*--- 좋아요 추가 ---*/
     //@Transactional
@@ -38,6 +50,7 @@ public class LikeService {
         log.info("좋아요 누를 포스트:{}", post.getPostId());
 
         // 3. 좋아요 중복 여부 확인 (true면 아직 좋아요 안 누른 상태)
+        // TODO: 중복이면 좋아요 취소되도록 하기
         if (isNotAlreadyLike(user, post)) {
             likeRepository.save(new Like(user, post));
 

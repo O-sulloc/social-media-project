@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/api/v1/posts/{postId}/comments").permitAll() //댓글 조회 누구나 가능
 
                 .antMatchers(HttpMethod.POST, "/api/v1/posts/{postId}/likes").authenticated() // 좋아요 누르기
+                .antMatchers(HttpMethod.GET, "/api/v1/posts/{postId}/likes").permitAll() // 좋아요 개수 조회
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

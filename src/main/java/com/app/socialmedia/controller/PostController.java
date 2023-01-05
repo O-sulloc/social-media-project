@@ -14,7 +14,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
@@ -24,6 +23,22 @@ public class PostController {
     private final PostService postService;
     private final CommentService commentService;
     private final LikeService likeService;
+
+    /**
+     * 좋아요 개수 조회
+     *
+     * @param postId (조회할 포스트)
+     * @return 좋아요 개수
+     */
+    @GetMapping("/{postId}/likes")
+    public Response<Long> getLike(@PathVariable Long postId) {
+        log.info("컨트롤러 요청들어옴");
+
+        Long count = likeService.getLike(postId);
+
+        return Response.success(count);
+    }
+
 
     /**
      * 좋아요 기능
@@ -150,3 +165,4 @@ public class PostController {
         return Response.success(new PostResponse("포스트 등록 완료", postDTO.getPostId()));
     }
 }
+
