@@ -28,10 +28,19 @@ public class CommentService {
 
 
     /*--- 댓글 전체 조회---*/
-    public CommentInfoResponse getAllComments(Pageable pageable) {
+    public CommentInfoResponse getAllComments(Pageable pageable, Long postId) {
 
-        // 댓글 찾기
-        Page<Comment> commentList = commentRepository.findAll(pageable);
+        // 1. 포스트 존재 여부 검증
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+
+        log.info("post잘 가져오는지 postId:{}", post.getPostId());
+
+        // 2. 댓글 찾기
+        //Page<Comment> commentList = commentRepository.findAll(pageable);
+        Page<Comment> commentList = commentRepository.findByPost(post, pageable);
+
+        log.info("댓글:{}", commentList);
 
         Page<CommentResponse> commentResponse = commentList.map(
                 comment -> CommentResponse.builder()
