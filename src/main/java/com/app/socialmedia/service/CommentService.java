@@ -1,11 +1,14 @@
 package com.app.socialmedia.service;
 
+import com.app.socialmedia.domain.dto.alarm.AlarmType;
 import com.app.socialmedia.domain.dto.comment.*;
+import com.app.socialmedia.domain.entity.Alarm;
 import com.app.socialmedia.domain.entity.Comment;
 import com.app.socialmedia.domain.entity.Post;
 import com.app.socialmedia.domain.entity.User;
 import com.app.socialmedia.exception.AppException;
 import com.app.socialmedia.exception.ErrorCode;
+import com.app.socialmedia.repository.AlarmRepository;
 import com.app.socialmedia.repository.CommentRepository;
 import com.app.socialmedia.repository.PostRepository;
 import com.app.socialmedia.repository.UserRepository;
@@ -25,6 +28,7 @@ public class CommentService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final AlarmRepository alarmRepository;
 
 
     /*--- 댓글 전체 조회---*/
@@ -138,6 +142,8 @@ public class CommentService {
 
         // 3. 댓글 저장
         Comment comment = commentRepository.save(request.toEntity(user, post));
+        alarmRepository.save(Alarm.addAlarm(AlarmType.NEW_COMMENT_ON_POST,post.getUser(), user.getUserId(), post.getPostId()));
+
 
         return CommentDTO.builder()
                 .id(comment.getId())

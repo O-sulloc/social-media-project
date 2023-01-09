@@ -1,10 +1,13 @@
 package com.app.socialmedia.service;
 
+import com.app.socialmedia.domain.dto.alarm.AlarmType;
+import com.app.socialmedia.domain.entity.Alarm;
 import com.app.socialmedia.domain.entity.Like;
 import com.app.socialmedia.domain.entity.Post;
 import com.app.socialmedia.domain.entity.User;
 import com.app.socialmedia.exception.AppException;
 import com.app.socialmedia.exception.ErrorCode;
+import com.app.socialmedia.repository.AlarmRepository;
 import com.app.socialmedia.repository.LikeRepository;
 import com.app.socialmedia.repository.PostRepository;
 import com.app.socialmedia.repository.UserRepository;
@@ -23,6 +26,7 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final AlarmRepository alarmRepository;
 
 
     /*--- 좋아요 개수 리턴 ---*/
@@ -60,15 +64,10 @@ public class LikeService {
             return false;
         } else {
             likeRepository.save(new Like(user, post));
+            alarmRepository.save(Alarm.addAlarm(AlarmType.NEW_LIKE_ON_POST, post.getUser(), user.getUserId(), post.getPostId()));
 
             return true;
         }
-    }
-
-    /*--- 좋아요 중복 검증 ---*/
-    // true면 아직 좋아요 안 누른 상태
-    private boolean isNotAlreadyLike(User user, Post post) {
-        return likeRepository.findByUserAndPost(user, post).isEmpty();
     }
 
 }
