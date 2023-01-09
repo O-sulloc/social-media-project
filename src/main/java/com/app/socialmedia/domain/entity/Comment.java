@@ -2,8 +2,11 @@ package com.app.socialmedia.domain.entity;
 
 import com.app.socialmedia.domain.dto.comment.CommentEditor;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -11,6 +14,8 @@ import javax.persistence.*;
 @Getter
 @Builder
 @Setter
+@SQLDelete(sql = "UPDATE comment SET deleted_at = current_timestamp WHERE id = ?")
+@Where(clause = "deleted_at is null")
 public class Comment extends Base {
 
     @Id
@@ -25,6 +30,8 @@ public class Comment extends Base {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    private LocalDateTime deletedAt;
 
     public CommentEditor.CommentEditorBuilder toEditor() {
         return CommentEditor.builder()
