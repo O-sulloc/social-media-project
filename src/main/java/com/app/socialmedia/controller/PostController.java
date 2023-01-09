@@ -1,6 +1,7 @@
 package com.app.socialmedia.controller;
 
 import com.app.socialmedia.domain.dto.comment.*;
+import com.app.socialmedia.domain.dto.myFeed.MyFeedInfoResponse;
 import com.app.socialmedia.domain.dto.post.*;
 import com.app.socialmedia.domain.entity.Response;
 import com.app.socialmedia.service.CommentService;
@@ -23,6 +24,15 @@ public class PostController {
     private final PostService postService;
     private final CommentService commentService;
     private final LikeService likeService;
+
+
+    @GetMapping("/my")
+    public Response<MyFeedInfoResponse> getMyPosts(@PageableDefault(size = 20, sort = "registeredAt", direction = Sort.Direction.DESC) Pageable pageable,
+                                                   Authentication authentication) {
+        MyFeedInfoResponse postResponse = postService.getMyFeed(pageable, authentication);
+
+        return Response.success(postResponse);
+    }
 
     /**
      * 좋아요 개수 조회

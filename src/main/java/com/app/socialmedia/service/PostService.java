@@ -1,5 +1,7 @@
 package com.app.socialmedia.service;
 
+import com.app.socialmedia.domain.dto.myFeed.MyFeedInfoResponse;
+import com.app.socialmedia.domain.dto.myFeed.MyFeedResponse;
 import com.app.socialmedia.domain.dto.post.*;
 import com.app.socialmedia.domain.entity.Post;
 import com.app.socialmedia.domain.entity.User;
@@ -26,6 +28,41 @@ public class PostService {
 
     private final UserRepository userRepository;
 
+    public MyFeedInfoResponse getMyFeed(Pageable pageable, Authentication authentication) {
+        // 1. 유저 검증
+        User user = userRepository.findByUserName(authentication.getName())
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
+
+        // 2. 유저가 쓴 글 불러오기
+        Page<Post> postList = postRepository.findByUser(user, pageable);
+
+        //dto로 변환
+        Page<MyFeedResponse> postResponse = postList.map(
+                post -> MyFeedResponse.builder()
+                        .id(post.getPostId())
+                        .body(post.getBody())
+                        .title(post.getTitle())
+                        .userName(post.getUser().getUserName())
+                        .createdAt(post.getRegisteredAt())
+                        .build());
+
+        MyFeedInfoResponse myFeedInfoResponse = MyFeedInfoResponse.builder()
+                .pageable(postResponse.getPageable())
+                .content(postResponse.getContent())
+                .last(postResponse.hasNext()) //다음 글이 없으면 False를 리턴한다.
+                .totalPages(postResponse.getTotalPages())
+                .totalElements(postResponse.getTotalElements())
+                .size(postResponse.getSize())
+                .number(postResponse.getNumber())
+                .sort(postResponse.getSort())
+                .first(postResponse.isFirst())
+                .numberOfElements(postResponse.getNumberOfElements())
+                .empty(postResponse.isEmpty())
+                .build();
+
+        return myFeedInfoResponse;
+    }
+
     public PageInfoResponse getList(Pageable pageable) {
 
         Page<Post> postList = postRepository.findAll(pageable);
@@ -46,6 +83,7 @@ public class PostService {
                 .pageable("INSTANCE")
                 .last(postResponse.hasNext()) //다음 글이 없으면 False를 리턴한다.
                 .totalPages(postResponse.getTotalPages())
+                .totalElements(postResponse.getTotalElements())
                 .size(postResponse.getSize())
                 .number(postResponse.getNumber())
                 .sort(postResponse.getSort())
@@ -68,6 +106,9 @@ public class PostService {
         if (!authentication.getName().equals(post.getUser().getUserName())) {
             throw new AppException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage());
         }
+
+        //댓글도 지우고
+        //좋아요도 지우고
 
         // TODO: 삭제하려는 사람 == ADMIN
 
