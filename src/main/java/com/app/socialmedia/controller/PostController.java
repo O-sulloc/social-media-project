@@ -7,6 +7,7 @@ import com.app.socialmedia.domain.entity.Response;
 import com.app.socialmedia.service.CommentService;
 import com.app.socialmedia.service.LikeService;
 import com.app.socialmedia.service.PostService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ public class PostController {
     private final LikeService likeService;
 
 
+    @ApiOperation(value = "마이 피드", notes = "특정 사용자가 작성한 모든 게시글을 조회합니다. 로그인한 사용자만 가능합니다.")
     @GetMapping("/my")
     public Response<MyFeedInfoResponse> getMyPosts(@PageableDefault(size = 20, sort = "registeredAt", direction = Sort.Direction.DESC) Pageable pageable,
                                                    Authentication authentication) {
@@ -34,12 +36,7 @@ public class PostController {
         return Response.success(postResponse);
     }
 
-    /**
-     * 좋아요 개수 조회
-     *
-     * @param postId (조회할 포스트)
-     * @return 좋아요 개수
-     */
+    @ApiOperation(value = "좋아요 조회", notes = "특정 게시글의 좋아요 개수를 조회합니다.")
     @GetMapping("/{postId}/likes")
     public Response<Long> getLike(@PathVariable Long postId) {
         log.info("컨트롤러 요청들어옴");
@@ -50,13 +47,7 @@ public class PostController {
     }
 
 
-    /**
-     * 좋아요 기능
-     *
-     * @param postId
-     * @param authentication
-     * @return
-     */
+    @ApiOperation(value = "좋아요 누르기", notes = "특정 게시글에 좋아요를 누릅니다. 로그인한 사용자만 가능합니다.")
     @PostMapping("/{postId}/likes")
     public Response<String> addLike(@PathVariable Long postId, Authentication authentication) {
         if (!likeService.addLike(authentication, postId)) {
@@ -68,13 +59,7 @@ public class PostController {
     }
 
 
-    /**
-     * 댓글 조회
-     *
-     * @param postId   (포스트 번호)
-     * @param pageable
-     * @return commentInfoResponse
-     */
+    @ApiOperation(value = "댓글 조회", notes = "특정 게시글의 댓글을 전체 조회합니다.")
     @GetMapping("/{postId}/comments")
     public Response<CommentInfoResponse> getAllComments(@PathVariable Long postId, @PageableDefault(size = 10, sort = "registeredAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
@@ -84,14 +69,7 @@ public class PostController {
     }
 
 
-    /**
-     * 댓글 수정
-     *
-     * @param postId         (포스트 번호)
-     * @param id             (댓글 번호)
-     * @param authentication
-     * @return id, comment, userName, postId, lastModifiedAt
-     */
+    @ApiOperation(value = "댓글 수정", notes = "특정 게시글에 달린 댓글을 수정합니다. 작성자만 수정할 수 있습니다.")
     @PutMapping("/{postId}/comments/{id}")
     public Response<CommentUpdateResponse> updateComment(@PathVariable Long postId, @PathVariable Long id, @RequestBody CommentRequest request, Authentication authentication) {
 
@@ -101,14 +79,7 @@ public class PostController {
     }
 
 
-    /**
-     * 댓글 삭제
-     *
-     * @param postId         (포스트 번호)
-     * @param id             (댓글 번호)
-     * @param authentication
-     * @return message, id
-     */
+    @ApiOperation(value = "댓글 삭제", notes = "특정 게시글에 달린 댓글을 삭제합니다. 작성자만 삭제할 수 있습니다.")
     @DeleteMapping("/{postId}/comments/{id}")
     public Response<CommentDeleteResponse> deleteComment(@PathVariable Long postId, @PathVariable Long id, Authentication authentication) {
         commentService.deleteComment(id, authentication);
@@ -117,14 +88,7 @@ public class PostController {
     }
 
 
-    /**
-     * 댓글 작성
-     *
-     * @param postId         (포스트 번호)
-     * @param request        (comment)
-     * @param authentication
-     * @return id, comment, userName, postId, createdAt
-     */
+    @ApiOperation(value = "댓글 작성", notes = "특정 게시글에 댓글을 작성합니다. 로그인한 사용자만 작성 가능합니다.")
     @PostMapping("/{postId}/comments")
     public Response<CommentResponse> addComment(@PathVariable Long postId, @RequestBody CommentRequest request, Authentication authentication) {
 
@@ -133,6 +97,7 @@ public class PostController {
         return Response.success(new CommentResponse(commentDTO.getId(), commentDTO.getComment(), commentDTO.getUser().getUserName(), commentDTO.getPost().getPostId(), commentDTO.getRegisteredAt()));
     }
 
+    @ApiOperation(value = "게시글 전체 조회", notes = "등록된 모든 게시글을 조회합니다.")
     @GetMapping
     public Response<PageInfoResponse> getList(@PageableDefault(size = 20, sort = "registeredAt", direction = Sort.Direction.DESC) Pageable pageable) {
         PageInfoResponse postResponses = postService.getList(pageable);
@@ -141,6 +106,7 @@ public class PostController {
     }
 
 
+    @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제합니다. 작성자만 삭제할 수 있습니다.")
     @DeleteMapping("/{postId}")
     public Response<PostResponse> delete(@PathVariable Long postId, Authentication authentication) {
         postService.delete(postId, authentication);
@@ -148,6 +114,7 @@ public class PostController {
         return Response.success(new PostResponse("포스트 삭제 완료", postId));
     }
 
+    @ApiOperation(value = "게시글 수정", notes = "게시글을 수정합니다. 작성자만 수정할 수 있습니다.")
     @PutMapping("/{postId}")
     public Response<PostResponse> update(@PathVariable Long postId, @RequestBody PostUpdateRequest request, Authentication authentication) {
         postService.update(postId, request, authentication);
@@ -155,6 +122,7 @@ public class PostController {
         return Response.success(new PostResponse("포스트 수정 완료", postId));
     }
 
+    @ApiOperation(value = "게시글 단건 조회", notes = "한 개의 게시글만 조회합니다.")
     @GetMapping("/{postId}")
     public Response<PostGetOneResponse> getOne(@PathVariable Long postId) {
         PostDTO postDTO = postService.getOne(postId);
@@ -162,6 +130,7 @@ public class PostController {
         return Response.success(new PostGetOneResponse(postDTO.getPostId(), postDTO.getTitle(), postDTO.getBody(), postDTO.getUserName(), postDTO.getRegisteredAt(), postDTO.getUpdatedAt()));
     }
 
+    @ApiOperation(value = "게시글 등록", notes = "게시글을 작성합니다. 로그인한 사용자만 작성 가능합니다.")
     @PostMapping
     public Response<PostResponse> addPost(@RequestBody PostAddRequest request, Authentication authentication) {
         //포스트 작성
