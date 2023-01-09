@@ -50,9 +50,7 @@ public class PostController {
     @PostMapping("/{postId}/likes")
     public Response<String> addLike(@PathVariable Long postId, Authentication authentication) {
         if (!likeService.addLike(authentication, postId)) {
-            // false면 중복
-
-            return Response.error("ERROR", "좋아요는 한 번만 가능합니다.");
+            return Response.success("좋아요 취소");
         }
 
         return Response.success("좋아요를 눌렀습니다.");
@@ -70,7 +68,7 @@ public class PostController {
     @GetMapping("/{postId}/comments")
     public Response<CommentInfoResponse> getAllComments(@PathVariable Long postId, @PageableDefault(size = 10, sort = "registeredAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        CommentInfoResponse commentInfoResponse = commentService.getAllComments(pageable);
+        CommentInfoResponse commentInfoResponse = commentService.getAllComments(pageable, postId);
 
         return Response.success(commentInfoResponse);
     }

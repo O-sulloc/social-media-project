@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -49,17 +51,18 @@ public class LikeService {
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
         log.info("좋아요 누를 포스트:{}", post.getPostId());
 
-        // 3. 좋아요 중복 여부 확인 (true면 아직 좋아요 안 누른 상태)
-        // TODO: 중복이면 좋아요 취소되도록 하기
-        if (isNotAlreadyLike(user, post)) {
+        // 3. 좋아요 중복 여부 확인
+        Optional<Like> like = likeRepository.findByUserAndPost(user, post);
+
+        if (like.isPresent()) {
+            likeRepository.delete(like.get()); // 삭제
+
+            return false;
+        } else {
             likeRepository.save(new Like(user, post));
 
             return true;
         }
-
-        log.info("이미 좋아요 누름");
-
-        return false;
     }
 
     /*--- 좋아요 중복 검증 ---*/
