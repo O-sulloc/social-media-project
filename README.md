@@ -4,10 +4,10 @@
 > RESTful API, 회원가입, 게시판 CRUD, 댓글 및 좋아요 등의 기능이 있는 Social Media 웹사이트입니다.
 
 ### URL
-> http://ec2-52-78-177-238.ap-northeast-2.compute.amazonaws.com:8080
+> http://ec2-13-125-86-26.ap-northeast-2.compute.amazonaws.com:8080
 
 ### Swagger
-> http://ec2-52-78-177-238.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
+> http://ec2-13-125-86-26.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
 
 ---
 
