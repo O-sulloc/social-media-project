@@ -4,10 +4,13 @@
 > RESTful API, 회원가입, 게시판 CRUD, 댓글 및 좋아요 등의 기능이 있는 Social Media 웹사이트입니다.
 
 ### URL
-> http://ec2-13-125-86-26.ap-northeast-2.compute.amazonaws.com:8080
+> http://ec2-43-200-174-78.ap-northeast-2.compute.amazonaws.com:8080
+
+### Postman API Documentation
+> https://documenter.getpostman.com/view/25565932/2s935vnLd7
 
 ### Swagger
-> http://ec2-13-125-86-26.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
+> http://ec2-43-200-174-78.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
 
 ---
 
@@ -55,7 +58,7 @@
 
 ![스크린샷_2022-12-27_오후_5.58.05](/uploads/660c3acc1b62dabe5788ff8d3a49f1d1/스크린샷_2022-12-27_오후_5.58.05.png)
 
-<!-- 
+
 #### 3️⃣ 피드
 
 - 로그인 한 회원은 자신이 작성한 글 목록을 볼 수 있습니다.
@@ -74,4 +77,4 @@
 #### 6️⃣ 알림
 
 - 알림은 회원이 자신이 쓴 글에 대해 다른회원의 댓글을 올리거나 좋아요시 받는 기능입니다.
-- 알림 목록에서 자신이 쓴 글에 달린 댓글과 좋아요를 확인할 수 있습니다. -->
+- 알림 목록에서 자신이 쓴 글에 달린 댓글과 좋아요를 확인할 수 있습니다.
