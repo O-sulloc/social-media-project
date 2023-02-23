@@ -1,16 +1,16 @@
 # :pushpin: Social Media Project
 ### 멋쟁이사자처럼 백엔드 스쿨 2기 개인 프로젝트
 
-> RESTful API, 회원가입, 게시판 CRUD, 댓글 및 좋아요 등의 기능이 있는 Social Media 웹사이트입니다.
+> 회원가입, 게시판 CRUD, 댓글 및 좋아요 등의 기능을 RESTful API로 구현한 Social Media 웹사이트입니다.
 
 ### URL
-> http://ec2-43-200-174-78.ap-northeast-2.compute.amazonaws.com:8080
+> http://ec2-3-36-111-235.ap-northeast-2.compute.amazonaws.com:8080
 
 ### Postman API Documentation
 > https://documenter.getpostman.com/view/25565932/2s935vnLd7
 
 ### Swagger
-> http://ec2-43-200-174-78.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
+> http://ec2-3-36-111-235.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
 
 ---
 
@@ -43,7 +43,7 @@
 
 #### 1️⃣ 회원 인증·인가
 
-- 모든 회원은 회원가입을 통해 회원이 됩니다.
+- 회원가입 시, Spring Security의 BCryptPasswordEncoder를 사용하여 비밀번호를 암호화했습니다.
 - 로그인을 하지 않으면 SNS 기능 중 피드를 보는 기능만 가능합니다.
 - 로그인한 회원은 글쓰기, 수정, 댓글, 좋아요, 알림 기능이 가능합니다.
 
