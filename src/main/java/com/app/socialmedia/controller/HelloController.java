@@ -13,7 +13,7 @@ public class HelloController {
 
     @GetMapping
     public String hello() {
-        return "test";
+        return "plz";
     }
 
     @GetMapping("/{num}")
