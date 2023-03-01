@@ -4,13 +4,13 @@
 > 회원가입, 게시판 CRUD, 댓글 및 좋아요 등의 기능을 RESTful API로 구현한 Social Media 웹사이트입니다.
 
 ### URL
-> http://ec2-3-36-111-235.ap-northeast-2.compute.amazonaws.com:8080
+> http://ec2-43-201-23-110.ap-northeast-2.compute.amazonaws.com:8080
 
 ### Postman API Documentation
 > https://documenter.getpostman.com/view/25565932/2s935vnLd7
 
 ### Swagger
-> http://ec2-3-36-111-235.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
+> http://ec2-43-201-23-110.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
 
 ---
 
