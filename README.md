@@ -7,7 +7,7 @@
 > https://documenter.getpostman.com/view/25565932/2s935vnLd7
 
 ### Swagger
-> http://ec2-43-201-23-110.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
+> http://ec2-52-78-201-217.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
 
 ---
 
